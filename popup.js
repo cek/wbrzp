@@ -36,6 +36,7 @@ document.getElementById("apply_button").addEventListener('click', () => {
         var node = document.getElementById("uploaded_results");
         var lines = node.innerHTML.split('\n');
         var numDQ = 0;
+        var numEmptyHR = 0;
         node.value = "";
         for (var i = 0; i < lines.length; i++)
         {
@@ -51,6 +52,10 @@ document.getElementById("apply_button").addEventListener('click', () => {
                 numDQ++;
                 l[f.FINAL_CAT] = "ZP";
             }
+            else if (l[f.HR] == '')
+            {
+                numEmptyHR++;
+            }
             else if (l[f.HR] == 0)
             {
                 info.innerHTML += l[f.NAME] + " (" + l[f.ORIG_CAT] + " -> " + l[f.FINAL_CAT] + ") HRM DQ'd\n";
@@ -58,6 +63,11 @@ document.getElementById("apply_button").addEventListener('click', () => {
                 l[f.FINAL_CAT] = "HR";
             }
             node.value += l.join(',') + '\n';
+        }
+        if (numEmptyHR != 0)
+        {
+            info.innerHTML += "Warning: " + numEmptyHR + " Cat A & B " + (numEmptyHR == 1 ? "rider" : "riders") +
+                " found with empty HR data.  Ignored.\n";
         }
         info.innerHTML += numDQ + (numDQ == 1 ? " rider" : " riders") + " DQ'd\n";
     }
